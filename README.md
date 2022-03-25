@@ -93,10 +93,13 @@
 
  ## Counter Example in Vivado
 
-   | Design | Testbench |
-   | --- | --- |
-   | 
-    ```verilog
+<table>
+<tr>
+    <td> Design </td><td> Testbench </td>
+</tr>
+<tr>     
+    <td>
+
         `timescale 1ns / 1ps
     // Description: 4 bit counter with source clock (100MHz) division.
 
@@ -136,8 +139,10 @@
     end
 
     endmodule
-    ```
-    |  |
+    
+</td>
+<td></td>
+</tr>
 
    ### Counter Elaboration
 

@@ -99,47 +99,49 @@
 </tr>
 <tr>     
     <td>
+```verilog
+   `timescale 1ns / 1ps
+   // Description: 4 bit counter with source clock (100MHz) division.
 
-        `timescale 1ns / 1ps
-    // Description: 4 bit counter with source clock (100MHz) division.
+   //////////////////////////////////////////////////////////////////////////////////
+   module counter_clk_div(clk,rst,counter_out);
+   input clk,rst;
+   reg div_clk;
+   reg [25:0] delay_count;
+   output reg [3:0] counter_out;
 
-    //////////////////////////////////////////////////////////////////////////////////
-    module counter_clk_div(clk,rst,counter_out);
-    input clk,rst;
-    reg div_clk;
-    reg [25:0] delay_count;
-    output reg [3:0] counter_out;
-
-    //////////clock division block////////////////////
-    always @(posedge clk)
-    begin
-        if(rst) begin
-            delay_count<=26'd0;
-            counter_out<=4'b0000;
-            div_clk <= 1'b0; //initialise div_clk
-            counter_out<=4'b0000;
-        end
-        else if(delay_count==26'd212) begin
-            delay_count<=26'd0; //reset upon reaching the max value
-            div_clk <= ~div_clk;  //generating a slow clock
-        end
-        else begin
-            delay_count<=delay_count+1;
-        end
-    end
+   //////////clock division block////////////////////
+   always @(posedge clk)
+   begin
+       if(rst) begin
+           delay_count<=26'd0;
+           counter_out<=4'b0000;
+           div_clk <= 1'b0; //initialise div_clk
+           counter_out<=4'b0000;
+       end
+       else if(delay_count==26'd212) begin
+           delay_count<=26'd0; //reset upon reaching the max value
+           div_clk <= ~div_clk;  //generating a slow clock
+       end
+       else begin
+           delay_count<=delay_count+1;
+       end
+   end
 
 
-    /////////////4 bit counter block///////////////////
-    always @(posedge div_clk)
-    begin
-        if(rst) 
-            counter_out<=4'b0000;
-        else
-            counter_out<= counter_out+1;
-    end
+   /////////////4 bit counter block///////////////////
+   always @(posedge div_clk)
+   begin
+       if(rst) 
+           counter_out<=4'b0000;
+       else
+           counter_out<= counter_out+1;
+   end
 
-    endmodule
-    
+   endmodule
+
+``` 
+
 </td>
 <td></td>
 </tr>

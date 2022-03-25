@@ -78,20 +78,66 @@
 
    ### Basys FPGA Board
 
-      <img src="images/basys3_board.png">
+    <img src="images/basys3_board.png">
 
-      | No  | Description               | No  | Description |
-      | --- | ---                       | --- | ---         |
-      | 01  | Power Good LED            | 09  | Reset       |
-      | 02  | I/O                       | 10  |             |
-      | 03  | I/O                       | 11  |             |
-      | 04  | Four 7-segment Display    | 12  |             |
-      | 05  | Slide switches            | 13  |             |
-      | 06  | LEDs                      | 14  |             |
-      | 07  | Pushbuttons               | 15  |             |
-      | 08  | FPGA programming done LED | 16  |             |
+   | No  | Description               | No  | Description |
+   | --- | ---                       | --- | ---         |
+   | 01  | Power Good LED            | 09  | Reset       |
+   | 02  | I/O                       | 10  |             |
+   | 03  | I/O                       | 11  |             |
+   | 04  | Four 7-segment Display    | 12  |             |
+   | 05  | Slide switches            | 13  |             |
+   | 06  | LEDs                      | 14  |             |
+   | 07  | Pushbuttons               | 15  |             |
+   | 08  | FPGA programming done LED | 16  |             |
 
  ## Counter Example in Vivado
+
+   | Design | Testbench |
+   | --- | --- |
+   | 
+    ```verilog
+        `timescale 1ns / 1ps
+    // Description: 4 bit counter with source clock (100MHz) division.
+
+    //////////////////////////////////////////////////////////////////////////////////
+    module counter_clk_div(clk,rst,counter_out);
+    input clk,rst;
+    reg div_clk;
+    reg [25:0] delay_count;
+    output reg [3:0] counter_out;
+
+    //////////clock division block////////////////////
+    always @(posedge clk)
+    begin
+        if(rst) begin
+            delay_count<=26'd0;
+            counter_out<=4'b0000;
+            div_clk <= 1'b0; //initialise div_clk
+            counter_out<=4'b0000;
+        end
+        else if(delay_count==26'd212) begin
+            delay_count<=26'd0; //reset upon reaching the max value
+            div_clk <= ~div_clk;  //generating a slow clock
+        end
+        else begin
+            delay_count<=delay_count+1;
+        end
+    end
+
+
+    /////////////4 bit counter block///////////////////
+    always @(posedge div_clk)
+    begin
+        if(rst) 
+            counter_out<=4'b0000;
+        else
+            counter_out<= counter_out+1;
+    end
+
+    endmodule
+    ```
+    |  |
 
    ### Counter Elaboration
 

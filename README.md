@@ -144,6 +144,8 @@
 <td></td>
 </tr>
 
+</table>
+
    ### Counter Elaboration
 
    ### Counter Synthesis

@@ -13,7 +13,7 @@
       - [Configurable Logic Blocks](#configurable-logic-blocks)
       - [Basys FPGA Board](#basys-fpga-board)
     - [Counter Example in Vivado](#counter-example-in-vivado)
-      - [Counter Elaboration](#counter-elaboration)
+      - [Counter Simulation and Elaboration](#counter-simulation-and-elaboration)
       - [Counter Synthesis](#counter-synthesis)
       - [Counter Implementation](#counter-implementation)
       - [Constraints](#constraints)
@@ -99,51 +99,84 @@
 </tr>
 <tr>     
     <td>
-```verilog
-   `timescale 1ns / 1ps
-   // Description: 4 bit counter with source clock (100MHz) division.
 
-   //////////////////////////////////////////////////////////////////////////////////
-   module counter_clk_div(clk,rst,counter_out);
-   input clk,rst;
-   reg div_clk;
-   reg [25:0] delay_count;
-   output reg [3:0] counter_out;
+        `timescale 1ns / 1ps
+    // Description: 4 bit counter with source clock (100MHz) division.
 
-   //////////clock division block////////////////////
-   always @(posedge clk)
-   begin
-       if(rst) begin
-           delay_count<=26'd0;
-           counter_out<=4'b0000;
-           div_clk <= 1'b0; //initialise div_clk
-           counter_out<=4'b0000;
-       end
-       else if(delay_count==26'd212) begin
-           delay_count<=26'd0; //reset upon reaching the max value
-           div_clk <= ~div_clk;  //generating a slow clock
-       end
-       else begin
-           delay_count<=delay_count+1;
-       end
-   end
+    //////////////////////////////////////////////////////////////////////////////////
+    module counter_clk_div(clk,rst,counter_out);
+    input clk,rst;
+    reg div_clk;
+    reg [25:0] delay_count;
+    output reg [3:0] counter_out;
+
+    //////////clock division block////////////////////
+    always @(posedge clk)
+    begin
+        if(rst) begin
+            delay_count<=26'd0;
+            counter_out<=4'b0000;
+            div_clk <= 1'b0; //initialise div_clk
+            counter_out<=4'b0000;
+        end
+        else if(delay_count==26'd212) begin
+            delay_count<=26'd0; //reset upon reaching the max value
+            div_clk <= ~div_clk;  //generating a slow clock
+        end
+        else begin
+            delay_count<=delay_count+1;
+        end
+    end
 
 
-   /////////////4 bit counter block///////////////////
-   always @(posedge div_clk)
-   begin
-       if(rst) 
-           counter_out<=4'b0000;
-       else
-           counter_out<= counter_out+1;
-   end
+    /////////////4 bit counter block///////////////////
+    always @(posedge div_clk)
+    begin
+        if(rst) 
+            counter_out<=4'b0000;
+        else
+            counter_out<= counter_out+1;
+    end
 
-   endmodule
+    endmodule
+    
+</td>
+<td>
 
-``` 
+    `timescale 1ns / 1ps
+
+    module test_counter();
+    reg clk, reset;
+    wire [3:0] out;
+
+    //create an instance of the design
+    counter_clk_div dut(clk, reset, out);  
+
+    initial begin
+
+    //note that these statements are sequential.. execute one after the other 
+
+    //$dumpfile ("count.vcd"); 
+    //$dumpvars(0,upcounter_testbench);
+
+    clk=0;  //at time=0
+
+    reset=1;//at time=0
+
+    #20; //delay 20 units
+    reset=0; //after 20 units of time, reset becomes 0
+
+
+    end
+
+
+    always 
+    #5 clk=~clk;  // toggle or negate the clk input every 5 units of time
+
+
+    endmodule 
 
 </td>
-<td></td>
 </tr>
 
 </table>

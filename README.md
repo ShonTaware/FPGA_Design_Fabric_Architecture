@@ -212,12 +212,6 @@
 ## VTR
    The Verilog to Routing (VTR) project provides open-source CAD tools for FPGA architecture and CAD research. The VTR design flow takes as input a Verilog description of a digital circuit, and a description of the target FPGA architecture.
 
-   VTR perfoms:
-
-   - Elaboration & Synthesis (ODIN II)
-   - Logic Optimization & Technology Mapping (ABC)
-   - Packing, Placement, Routing & Timing Analysis (VPR)
-
    To invoke VTR from command-line:
     
     ```
@@ -231,7 +225,26 @@
 
 ## VTR Flow
 
-   ### Timing Analysis VTR Flow
+   The basic VTR flow perfoms:
+
+   - Elaboration & Synthesis (ODIN II)
+   - Logic Optimization & Technology Mapping (ABC)
+   - Packing, Placement, Routing & Timing Analysis (VPR)
+
+   The snippets mentioned below show some of the stages from the VTR flow
+
+   <table>
+    <tr>
+     <td><img src="images/vtr_flow__toggle_critical_paths.png"><br>Critical Paths</td>
+     <td><img src="images/vtr_flow__toggle_nets__nets.png"><br>Nets</td>
+    </tr>
+    <tr>
+     <td><img src="images/vtr_flow__toggle_nets__logical_connections.png"><br>Logical Connections</td>
+     <td><img src="images/vtr_flow__routing_utilization.png"><br>Routing Utilizations</td>
+    </tr>
+   </table>
+
+### Timing Analysis VTR Flow
    In order to perform timing analysis, a constraint file needs to be created. This constraint file is provided as an input to tool. To perform timing analysis from command-line, below mentioned switch should be enabled.
 
     ```

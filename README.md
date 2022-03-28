@@ -187,9 +187,14 @@
     --gen_post_synthesis_netlist on
     ```
 
-   :-------------------------:|:-------------------------:
-   ![](https://github.com/ShonTaware/FPGA_Design_Fabric_Architecture/images/vtr_flow_post_synthesis_netlist_2.png)  |  ![](https://github.com/ShonTaware/FPGA_Design_Fabric_Architecture/images/vtr_flow_post_synthesis_netlist_2.png)
-
+   <table>
+    <tr>
+     <td><img src="images/vtr_flow_post_synthesis_netlist_1.png"></td>
+    </tr>
+    <tr>
+     <td><img src="images/vtr_flow_post_synthesis_netlist_2.png"></td>
+    </tr>
+   </table>
 
    ### Power Analysis VTR
    VTR provides a option to perform power analysis over the design. To enable power analysis in command-line, the switch mentioned below should be used.

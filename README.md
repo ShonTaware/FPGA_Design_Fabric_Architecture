@@ -6,7 +6,7 @@
     - [FPGA vs ASIC Comparison](#fpga-vs-asic-comparison)
   - [Day 1 - Exploring FPGA Basics and Vivado](#day-1---exploring-fpga-basics-and-vivado)
     - [FPGA Architecture](#fpga-architecture)
-      - [Configurable Logic Blocks](#configurable-logic-blocks)
+      - [Configurable Logic Block](#configurable-logic-block)
       - [Basys FPGA Board](#basys-fpga-board)
     - [Counter Example in Vivado](#counter-example-in-vivado)
       - [Counter Simulation and Elaboration](#counter-simulation-and-elaboration)
@@ -138,11 +138,10 @@
     endmodule 
    ```
 
+  ### Counter Simulation and Elaboration
    The snippet below shows the behavioural simulation for the up counter.
 
    <img src="images/d1_counter_div_sim.png">
-
-  ### Counter Elaboration
 
    Elaboration binds modules to module instances, builds the model hierarchy, computes parameter values, resolves hierarchical names, establishes net connectivity, and prepares all of this for simulation.
 

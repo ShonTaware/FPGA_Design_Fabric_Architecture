@@ -189,10 +189,8 @@
 
    <table>
     <tr>
-     <td><img src="images/vtr_flow_post_synthesis_netlist_1.png"></td>
-    </tr>
-    <tr>
-     <td><img src="images/vtr_flow_post_synthesis_netlist_2.png"></td>
+     <td><img src="images/vtr_flow_post_synthesis_netlist_1.png" style="width: 50%"></td>
+     <td><img src="images/vtr_flow_post_synthesis_netlist_2.png" style="width: 50%"></td>
     </tr>
    </table>
 

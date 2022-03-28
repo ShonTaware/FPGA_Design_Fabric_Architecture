@@ -4,7 +4,7 @@
 # Table of Contents
   - [Introduction To FPGA](#introduction-to-fpga)
     - [FPGA vs ASIC Comparison](#fpga-vs-asic-comparison)
-  - [Introduction To Xilinx Vivado](#introduction-to-xilinx-vivado)
+[comment]: <> (- [Introduction To Xilinx Vivado](#introduction-to-xilinx-vivado))
   - [List of All Open-Source Tools Used](#list-of-all-open-source-tools-used)
   - [Setting Up Environment](#setting-up-environment)
   - [Day 1 - Exploring FPGA Basics and Vivado](#day-1---exploring-fpga-basics-and-vivado)
@@ -56,7 +56,7 @@
    | Less Energy Efficient. Required more power for same task as compared to ASIC | More energy efficient                          |
    | Useful for prototyping or validating a design                                | Used for final product design after validation |
 
-# Introduction To Xilinx Vivado
+[comment]: <> (# Introduction To Xilinx Vivado)
 
 
 # Day 1 - Exploring FPGA Basics and Vivado

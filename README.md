@@ -188,7 +188,7 @@
     ```
 
    :-------------------------:|:-------------------------:
-   ![](images/vtr_flow_post_synthesis_netlist_2.png)  |  ![](images/vtr_flow_post_synthesis_netlist_2.png)
+   ![](https://github.com/ShonTaware/FPGA_Design_Fabric_Architecture/images/vtr_flow_post_synthesis_netlist_2.png)  |  ![](https://github.com/ShonTaware/FPGA_Design_Fabric_Architecture/images/vtr_flow_post_synthesis_netlist_2.png)
 
 
    ### Power Analysis VTR

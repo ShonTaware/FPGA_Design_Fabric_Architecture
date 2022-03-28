@@ -4,9 +4,10 @@
 # Table of Contents
   - [Introduction To FPGA](#introduction-to-fpga)
     - [FPGA vs ASIC Comparison](#fpga-vs-asic-comparison)
-[comment]: <> (- [Introduction To Xilinx Vivado](#introduction-to-xilinx-vivado))
-  - [List of All Open-Source Tools Used](#list-of-all-open-source-tools-used)
-  - [Setting Up Environment](#setting-up-environment)
+
+[comment]: <> (- [Introduction To Xilinx Vivado](#introduction-to-xilinx-vivado)
+[comment]: <> (- List of All Open-Source Tools Used](#list-of-all-open-source-tools-used)
+[comment]: <> (- [Setting Up Environment](#setting-up-environment)
   - [Day 1 - Exploring FPGA Basics and Vivado](#day-1---exploring-fpga-basics-and-vivado)
     - [FPGA Basics](#fpga-basics)
       - [FPGA Architecture](#fpga-architecture)

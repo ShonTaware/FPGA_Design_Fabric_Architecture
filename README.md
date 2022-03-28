@@ -67,7 +67,8 @@
     - I/O Cells
     - Memory / Block RAM
     
-    <img src="images/fpga_arch_1.png">
+   <img src="images/fpga_arch_1.png">
+   <img src="images/fpga_arch_2.png">
 
    ### Configurable Logic Block
     Configurable Logic Block (CLB) is responsible for the combinational or sequential logic implementation. CLB consists of :
@@ -78,7 +79,7 @@
 
    ### Basys FPGA Board
 
-    <img src="images/basys3_board.png">
+   <img src="images/basys3_board.png">
 
    | No  | Description               | No  | Description |
    | --- | ---                       | --- | ---         |
@@ -93,95 +94,7 @@
 
  ## Counter Example in Vivado
 
-<table>
-<tr>
-    <td> Design </td><td> Testbench </td>
-</tr>
-<tr>     
-    <td>
-
-        `timescale 1ns / 1ps
-    // Description: 4 bit counter with source clock (100MHz) division.
-
-    //////////////////////////////////////////////////////////////////////////////////
-    module counter_clk_div(clk,rst,counter_out);
-    input clk,rst;
-    reg div_clk;
-    reg [25:0] delay_count;
-    output reg [3:0] counter_out;
-
-    //////////clock division block////////////////////
-    always @(posedge clk)
-    begin
-        if(rst) begin
-            delay_count<=26'd0;
-            counter_out<=4'b0000;
-            div_clk <= 1'b0; //initialise div_clk
-            counter_out<=4'b0000;
-        end
-        else if(delay_count==26'd212) begin
-            delay_count<=26'd0; //reset upon reaching the max value
-            div_clk <= ~div_clk;  //generating a slow clock
-        end
-        else begin
-            delay_count<=delay_count+1;
-        end
-    end
-
-
-    /////////////4 bit counter block///////////////////
-    always @(posedge div_clk)
-    begin
-        if(rst) 
-            counter_out<=4'b0000;
-        else
-            counter_out<= counter_out+1;
-    end
-
-    endmodule
-    
-</td>
-<td>
-
-    `timescale 1ns / 1ps
-
-    module test_counter();
-    reg clk, reset;
-    wire [3:0] out;
-
-    //create an instance of the design
-    counter_clk_div dut(clk, reset, out);  
-
-    initial begin
-
-    //note that these statements are sequential.. execute one after the other 
-
-    //$dumpfile ("count.vcd"); 
-    //$dumpvars(0,upcounter_testbench);
-
-    clk=0;  //at time=0
-
-    reset=1;//at time=0
-
-    #20; //delay 20 units
-    reset=0; //after 20 units of time, reset becomes 0
-
-
-    end
-
-
-    always 
-    #5 clk=~clk;  // toggle or negate the clk input every 5 units of time
-
-
-    endmodule 
-
-</td>
-</tr>
-
-</table>
-
-   <img src="images/d1_counter_div__sim.png">
+   <img src="images/d1_counter_div_sim.png">
 
    ### Counter Elaboration
 
@@ -195,28 +108,100 @@
 
    ### Counter Implementation
 
-   <img src="images/d2_counter_post_synthesis_simulation.png">
-   <img src="images/d1_counter_div_implementation_timing_summary.png">   
-   <img src="images/d1_counter_div_implementation_utilization.png">
-   <img src="images/d1_counter_div_implementation_power.png">
-
    ### Constraints
 
    ### Bitstream
 
    ### Counter Timing, Power and Area
 
+   <img src="images/d1_counter_div_implementation_timing_summary.png">   
+   <img src="images/d1_counter_div_implementation_utilization.png">
+   <img src="images/d1_counter_div_implementation_power.png">
+
  ## Introduction To VIO
 
 # Day 2 - Exploring OpenFPGA, VPR and VTR
 
  ## Introduction To OpenFPGA
+  The OpenFPGA framework is the first open-source FPGA IP generator which supports highly-customizable homogeneous FPGA architectures. OpenFPGA provides a full set of EDA support for customized FPGAs, including Verilog-to-bitstream generation and self-testing verification. OpenFPGA targets to democratizing FPGA technology and EDA techniques, with agile prototyping approaches and constantly evolving EDA tools for chip designers and researchers.
+
+  Some key features of OpenFPGA are:
+    - Use of Automation Techniques
+    - Reduction of FPGA developement cycle to few days
+    - Provides open source design tools 
+
+   <img src="images/openfpga_framework.png">
+
  ## VPR
+   VPR (Versatile Place and Route) is an open source academic CAD tool designed for the exploration of new FPGA architectures and CAD algorithms, at the packing, placement and routing phases of the CAD flow.
+   As input, VPR takes a description of an FPGA architecture along with a technology-mapped user circuit. It then performs packing, placement, and routing to map the circuit onto the FPGA. The output of VPR includes the FPGA configuration needed to implement the circuit and statistics about the final mapped design (eg. critical path delay, area, etc). 
+
+   <img src="images/vpr_1.png">
+
+   To invoke VPR from terminal:
+   ```
+    $VTR_ROOT/vpr/vpr \
+    $VTR_ROOT/vtr_flow/arch/timing/EArch.xml \
+    <blif-file-path \
+    --route_chan_width 100 \
+    --disp on
+   ```
+
+   The basic VPR flow involves below mentioned steps:
+
+    - Packing - combinines primitives into complex blocks
+    - Placment - places complex blocks within the FPGA grid
+    - Routing - determines interconnections between blocks
+    - Analysis - analyzes the implementation
+
  ## VTR
-   ### VTR Flow
-   ### Post Synthesis Simulation
+   The Verilog to Routing (VTR) project provides open-source CAD tools for FPGA architecture and CAD research. The VTR design flow takes as input a Verilog description of a digital circuit, and a description of the target FPGA architecture.
+
+   VTR perfoms:
+
+    - Elaboration & Synthesis (ODIN II)
+    - Logic Optimization & Technology Mapping (ABC)
+    - Packing, Placement, Routing & Timing Analysis (VPR)
+
+   To invoke VTR from command-line:
+   ```
+    $VTR_ROOT/vtr_flow/scripts/run_vtr_flow.py \ 
+    $VTR_ROOT/doc/src/<verilog-file-path>
+    $VTR_ROOT/vtr_flow/arch/timing/EArch.xml \
+    -temp_dir . \
+    --route_chan_width 100 
+    
+   ```
+ ## VTR Flow
    ### Timing Area VTR Flow
+
+    ```
+     ## If constraint file is required
+    --sdc_file <sdc-file-path>
+    ```
+
+   ### Post Synthesis Simulation
+   Post Synthesis simulation in VTR flow is same as Post Implementation simulations in general. To generate the post synthesis netlist for simulation, the below mentioned switch should be enabled in during the VPR stage in VTR flow.
+    ```
+    ## To generate post synthesis netlist
+    --gen_post_synthesis_netlist on
+    ```
+
+   :-------------------------:|:-------------------------:
+   ![](images/vtr_flow_post_synthesis_netlist_2.png)  |  ![](images/vtr_flow_post_synthesis_netlist_2.png)
+
+
    ### Power Analysis VTR
+   VTR provides a option to perform power analysis over the design. To enable power analysis in command-line, the switch mentioned below should be used.
+
+    ```
+    ## For power analysis
+    -power -cmos_tech $VTR_ROOT/vtr_flow/tech/PTM_45nm/45nm.xml
+    ```
+
+   The snippet below shows a brief summary of the power analysis report generated by the VTR flow.
+   <img src="images/vtr_flow_counter_power.png">
+
  ## Basys3 vs VTR Earch Comparison
 
 # Day 3 - RISCV Core Programming Using Vivado
@@ -227,6 +212,10 @@
   - VLSI System Design: https://www.vlsisystemdesign.com/ip/
   - 4-stage RISC-V Core: https://github.com/ShonTaware/RISC-V_Core_4_Stage
   - RISC-V based Microprocessor: https://github.com/shivanishah269/risc-v-core
+  - https://openfpga.readthedocs.io/en/master/
+  - https://docs.verilogtorouting.org/en/latest/vpr/
+  - https://docs.verilogtorouting.org/en/latest/
+
 
 # Acknowledgement
   - [Kunal Ghosh](https://github.com/kunalg123), Co-founder, VSD Corp. Pvt. Ltd.

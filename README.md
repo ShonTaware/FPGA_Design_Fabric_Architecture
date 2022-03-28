@@ -193,6 +193,7 @@
 
    ### Post Synthesis Simulation
    Post Synthesis simulation in VTR flow is same as Post Implementation simulations in general. To generate the post synthesis netlist for simulation, the below mentioned switch should be enabled in during the VPR stage in VTR flow.
+    
     ```
      ## To generate post synthesis netlist
      --gen_post_synthesis_netlist on
@@ -227,9 +228,9 @@
  ## RTL To Synthesis
 
    <img src="images/d3_rvmyth_sim.png">
+   <img src="images/d3_elaborate_rvmyth.png">
    <img src="images/d3_rvmyth_synth_sch.png">
    <img src="images/d3_rvmyth_synth.png">
-   <img src="images/d3_elaborate_rvmyth.png">
 
  ## Synthesis To Bitstream 
 

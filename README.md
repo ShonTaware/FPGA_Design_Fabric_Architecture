@@ -181,11 +181,24 @@
 
 </table>
 
+   <img src="images/d1_counter_div__sim.png">
+
    ### Counter Elaboration
+
+   <img src="images/d1_counter_div_elaborate_schematic.png">
+   <img src="images/d1_counter_div_elaborate_io_planning.png">
 
    ### Counter Synthesis
 
+   <img src="images/d1_counter_div_synthesis_schematic.png">
+   <img src="images/d1_counter_div_synthesis_timing_summary.png">
+
    ### Counter Implementation
+
+   <img src="images/d2_counter_post_synthesis_simulation.png">
+   <img src="images/d1_counter_div_implementation_timing_summary.png">   
+   <img src="images/d1_counter_div_implementation_utilization.png">
+   <img src="images/d1_counter_div_implementation_power.png">
 
    ### Constraints
 

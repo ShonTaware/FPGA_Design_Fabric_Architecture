@@ -1,5 +1,5 @@
 # FPGA - Fabric, Design and Architecture
-  This repository contains all the information studied and created during the [FPGA - Fabric, Design and Architecture](https://www.vlsisystemdesign.com/fpga/) workshop. It is primarily foucused on a complete FPGA flow using the maximum open-soucre tools.
+  This repository contains all the information studied and created during the [FPGA - Fabric, Design and Architecture](https://www.vlsisystemdesign.com/fpga/) workshop. It is primarily focused on a complete FPGA flow using the maximum open-source tools.
 
 # Table of Contents
   - [Introduction To FPGA](#introduction-to-fpga)

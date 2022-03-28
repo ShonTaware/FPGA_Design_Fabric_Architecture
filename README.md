@@ -4,10 +4,6 @@
 # Table of Contents
   - [Introduction To FPGA](#introduction-to-fpga)
     - [FPGA vs ASIC Comparison](#fpga-vs-asic-comparison)
-
-[comment]: <> (- [Introduction To Xilinx Vivado](#introduction-to-xilinx-vivado)
-[comment]: <> (- List of All Open-Source Tools Used](#list-of-all-open-source-tools-used)
-[comment]: <> (- [Setting Up Environment](#setting-up-environment)
   - [Day 1 - Exploring FPGA Basics and Vivado](#day-1---exploring-fpga-basics-and-vivado)
     - [FPGA Basics](#fpga-basics)
       - [FPGA Architecture](#fpga-architecture)
@@ -29,7 +25,6 @@
       - [Post Synthesis Simulation](#post-synthesis-simulation)
       - [Timing Analysis VTR Flow](#timing-analysis-vtr-flow)
       - [Power Analysis VTR](#power-analysis-vtr)
-    - [Basys3 vs VTR Earch Comparison](#basys3-vs-vtr-earch-comparison)
   - [Day 3 - RISCV Core Programming Using Vivado](#day-3---riscv-core-programming-using-vivado)
     - [RTL To Synthesis](#rtl-to-synthesis)
     - [Synthesis To Bitstream](#synthesis-to-bitstream)
@@ -61,8 +56,7 @@
 
 
 # Day 1 - Exploring FPGA Basics and Vivado
- ## FPGA Basics
-   ### FPGA Architecture
+ ## FPGA Architecture
     The FPGA Architecture primarily consists of :
     - Configurable Logic Blocks
     - Programmable Interconnects 
@@ -70,7 +64,6 @@
     - Memory / Block RAM
     
    <img src="images/fpga_arch_1.png">
-   <img src="images/fpga_arch_2.png">
 
    ### Configurable Logic Block
     Configurable Logic Block (CLB) is responsible for the combinational or sequential logic implementation. CLB consists of :
@@ -79,48 +72,109 @@
     - Carry and Control Logic - Arithmetic Operations
     - Flip-flops and/or latches
 
+   <img src="images/fpga_arch_2.png">
+
    ### Basys FPGA Board
 
    <img src="images/basys3_board.png">
 
-   | No  | Description               | No  | Description |
-   | --- | ---                       | --- | ---         |
-   | 01  | Power Good LED            | 09  | Reset       |
-   | 02  | I/O                       | 10  |             |
-   | 03  | I/O                       | 11  |             |
-   | 04  | Four 7-segment Display    | 12  |             |
-   | 05  | Slide switches            | 13  |             |
-   | 06  | LEDs                      | 14  |             |
-   | 07  | Pushbuttons               | 15  |             |
-   | 08  | FPGA programming done LED | 16  |             |
+   | No  | Description               | No  | Description    |
+   | --- | ---                       | --- | ---            |
+   | 01  | Power Good LED            | 09  | Reset          |
+   | 02  | I/O                       | 10  | Jumper         |
+   | 03  | I/O                       | 11  | Interface      |
+   | 04  | Four 7-segment Display    | 12  | VGA Connector  |
+   | 05  | Slide switches            | 13  | USB Port       |
+   | 06  | LEDs                      | 14  | External Power |
+   | 07  | Pushbuttons               | 15  | Switch         |
+   | 08  | FPGA programming done LED | 16  | Jumper         |
 
  ## Counter Example in Vivado
+
+   A 4-bit up counter is being used for exploring the Vivado tool and OpenFPGA. Below mentioned the RTL for the counter modules that is being used
+
+   ```
+    `timescale 1ns / 1ps
+    //////////////////////////////////////////////////////////////////////////////////
+    // Description: 4 bit counter with source clock (100MHz) division.
+
+    module counter_clk_div(clk,rst,counter_out);
+        
+        input clk,rst;
+        reg div_clk;
+        reg [25:0] delay_count;
+        output reg [3:0] counter_out;
+
+        //////////clock division block////////////////////
+        always @(posedge clk) begin
+
+            if(rst) begin
+                delay_count<=26'd0;
+                div_clk <= 1'b0; //initialise div_clk
+            end
+            else
+                if(delay_count==26'd212) begin
+                    delay_count<=26'd0; //reset upon reaching the max value
+                    div_clk <= ~div_clk;  //generating a slow clock
+                end
+                else begin
+                    delay_count<=delay_count+1;
+                end
+            end
+        end
+
+        /////////////4 bit counter block///////////////////
+        always @(posedge div_clk) begin
+
+            if(rst) begin
+                counter_out<=4'b0000;
+            end
+            else begin
+                counter_out<= counter_out+1;
+            end
+        end
+
+    endmodule 
+   ```
+
+   The snippet below shows the behavioural simulation for the up counter.
 
    <img src="images/d1_counter_div_sim.png">
 
    ### Counter Elaboration
 
+    Elaboration binds modules to module instances, builds the model hierarchy, computes parameter values, resolves hierarchical names, establishes net connectivity, and prepares all of this for simulation.
+
+    The snippet below is the schematic of the counter design after elaboration.
+
    <img src="images/d1_counter_div_elaborate_schematic.png">
+
+    In I/O planning, the ports for modules are assigned respective FPGA pins. The snippet below shows the details about I/O planning.
+
    <img src="images/d1_counter_div_elaborate_io_planning.png">
 
    ### Counter Synthesis
+    Synthesis is the process that converts RTL into a technologyspecific gate-level netlist, optimized for a set of pre-defined constraints.
 
+    The below snippet show sthe schematic generated by the Vivado synthesis tool.
    <img src="images/d1_counter_div_synthesis_schematic.png">
-   <img src="images/d1_counter_div_synthesis_timing_summary.png">
-
-   ### Counter Implementation
 
    ### Constraints
+    Constraints in simple are the specifications of your design like timing specifications, ports declaration, input/output delays, etc.
 
    ### Bitstream
+    A bitstream is a binary sequence that comprises a sequence of bits. These are used in FPGA applications for programming purposes and to establish communication channels. FPGA bitstream is a file containing the programming data associated with your FPGA chip.
 
    ### Counter Timing, Power and Area
+
+   Implementation of a design also gives details like the timing summary, device utilization, power analysis, etc. The below snippets show the brief timing sumary, implementation and power analysis of the up-counter design.
 
    <img src="images/d1_counter_div_implementation_timing_summary.png">   
    <img src="images/d1_counter_div_implementation_utilization.png">
    <img src="images/d1_counter_div_implementation_power.png">
 
  ## Introduction To VIO
+   Virtual Input/Output (VIO) core is a customizable core that can both monitor and drive internal FPGA signals in real time. The number and width of the input and output ports are customizable in size to interface with the FPGA design.
 
 # Day 2 - Exploring OpenFPGA, VPR and VTR
 
@@ -222,9 +276,10 @@
    The snippet below shows a brief summary of the power analysis report generated by the VTR flow.
    <img src="images/vtr_flow_counter_power.png">
 
- ## Basys3 vs VTR Earch Comparison
+[comment]: <> ( ## Basys3 vs VTR Earch Comparison)
 
 # Day 3 - RISCV Core Programming Using Vivado
+   A 4-stage pipelined RISC-V core, named RVMYTH, is used in the repository. A comple
 
  ## RTL To Synthesis
 

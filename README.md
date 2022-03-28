@@ -235,12 +235,12 @@
 
    <table>
     <tr>
-     <td><img src="images/vtr_flow__toggle_critical_paths.png"><br>Critical Paths</td>
-     <td><img src="images/vtr_flow__toggle_nets__nets.png"><br>Nets</td>
+     <td><img src="images/vtr_flow__toggle_critical_paths.png"><br><center>Critical Paths</center></td>
+     <td><img src="images/vtr_flow__toggle_nets__nets.png"><br><center>Nets</center></td>
     </tr>
     <tr>
-     <td><img src="images/vtr_flow__toggle_nets__logical_connections.png"><br>Logical Connections</td>
-     <td><img src="images/vtr_flow__routing_utilization.png"><br>Routing Utilizations</td>
+     <td><img src="images/vtr_flow__toggle_nets__logical_connections.png"><br><center>Logical Connections</center></td>
+     <td><img src="images/vtr_flow__routing_utilization.png"><br><center>Routing Utilizations</center></td>
     </tr>
    </table>
 
